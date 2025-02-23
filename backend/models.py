@@ -5,10 +5,10 @@ from typing import Optional, List
 class Tracker(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     metric: str
+    complexity: str
     source: str
     storage: str
-    is_automated: bool
-    synced_to_sixthpillar: bool
+    entry_method: str
 
 class MacroCycle(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
