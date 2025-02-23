@@ -12,6 +12,29 @@ def create_db_and_tables():
 
 def create_samples():
     with Session(engine) as session:
+        # Tracking Table
+        trackers = [
+            Tracker(metric="10000 Steps", source="Garmin", storage="Garmin", is_automated=False, synced_to_sixthpillar=False),
+            Tracker(metric="9PM Bed time", source="Me", storage="Paper", is_automated=False, synced_to_sixthpillar=False),
+            Tracker(metric="Caffine", source="Me", storage="Paper", is_automated=False, synced_to_sixthpillar=False),
+            Tracker(metric="Creatine", source="Me", storage="Paper", is_automated=False, synced_to_sixthpillar=False),
+            Tracker(metric="Food", source="Me", storage="MacroFactor", is_automated=False, synced_to_sixthpillar=False),
+            Tracker(metric="Happiness", source="Me", storage="Paper", is_automated=False, synced_to_sixthpillar=False),
+            Tracker(metric="Journaling", source="Me", storage="Notion", is_automated=False, synced_to_sixthpillar=False),
+            Tracker(metric="Medications", source="Me", storage="Paper", is_automated=False, synced_to_sixthpillar=False),
+            Tracker(metric="Meditation", source="Down Dog", storage="Down Dog", is_automated=False, synced_to_sixthpillar=False),
+            Tracker(metric="Runs", source="Garmin", storage="Garmin", is_automated=False, synced_to_sixthpillar=False),
+            Tracker(metric="Sleep", source="Garmin", storage="Garmin", is_automated=True, synced_to_sixthpillar=False),
+            Tracker(metric="Steps", source="Garmin", storage="Garmin", is_automated=True, synced_to_sixthpillar=False),
+            Tracker(metric="Stress", source="Garmin and Me", storage="Garmin and Paper", is_automated=False, synced_to_sixthpillar=False),
+            Tracker(metric="Water", source="Me", storage="Paper", is_automated=False, synced_to_sixthpillar=False),
+            Tracker(metric="Weight", source="Me", storage="MacroFactor", is_automated=False, synced_to_sixthpillar=False),
+            Tracker(metric="Workout", source="Notion", storage="Notion", is_automated=False, synced_to_sixthpillar=False),
+            Tracker(metric="Yoga", source="Down Dog", storage="Down Dog", is_automated=False, synced_to_sixthpillar=False),
+        ]
+        session.add_all(trackers)
+        session.commit()
+
         # Insert MacroCycle
         macrocycle = MacroCycle(
             start_date=date(2024, 1, 1),

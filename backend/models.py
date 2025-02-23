@@ -2,6 +2,14 @@ from sqlmodel import SQLModel, Field, Relationship
 from datetime import date
 from typing import Optional, List
 
+class Tracker(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    metric: str
+    source: str
+    storage: str
+    is_automated: bool
+    synced_to_sixthpillar: bool
+
 class MacroCycle(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     start_date: date
