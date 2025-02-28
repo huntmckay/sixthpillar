@@ -9,29 +9,18 @@ class Tracker(SQLModel, table=True):
     source: str
     storage: str
     entry_method: str
+    description: str | None = Field(default=str("No Description set"))
 
-class MacroCycle(SQLModel, table=True):
-    id: int | None = Field(default=None, primary_key=True)
-    start_date: date
-    end_date: date
-    pillar: str
-    goal: str
-    mesocycles: List["MesoCycle"] = Relationship(back_populates="macrocycle")
+# a workout session is jsut going to be a filter of date
 
-class MesoCycle(SQLModel, table=True):
-    id: int | None = Field(default=None, primary_key=True)
-    macrocycle_id: int = Field(foreign_key="macrocycle.id")
-    start_date: date
-    end_date: date
-    theme: str
-    macrocycle: Optional[MacroCycle] = Relationship(back_populates="mesocycles")
-    microcycles: List["MicroCycle"] = Relationship(back_populates="mesocycle")
-
-class MicroCycle(SQLModel, table=True):
-    id: int | None = Field(default=None, primary_key=True)
-    mesocycle_id: int = Field(default=None, foreign_key="mesocycle.id")
-    start_date: date
-    end_date: date
-    focus: str
-    mesocycle: Optional[MesoCycle] = Relationship(back_populates="microcycles")
-    #daily_logs: List["PhysicalLog"] = Relationship(back_populates="microcycle")
+class Exercise(SQLModel, table=True):
+    id: int = Field(default=None, primary_key=True)
+    workout: str # push one,pull
+    target: str #chest -> probably becomes actual msucle names
+    name: str
+    sets: int
+    reps: int
+    rpe: int
+    weight: int
+    effort: str # "6,6,6,6"
+    date: date
