@@ -2,8 +2,8 @@ from sqlmodel import SQLModel, Field, Relationship
 from datetime import date
 from typing import Optional, List
 
-class Tracker(SQLModel, table=True):
-    id: int | None = Field(default=None, primary_key=True)
+class TrackerBase(SQLModel):
+    pillar: str
     metric: str
     complexity: str
     source: str
@@ -11,14 +11,14 @@ class Tracker(SQLModel, table=True):
     entry_method: str
     description: str | None = Field(default=str("No Description set"))
 
-
-class GoalCycles(SQLModel, table=True):
+class Tracker(TrackerBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
-    macro_id: int
-    meso_id: int
-    micro_id: int
-    goal_name: str
 
+class TrackerCreate(TrackerBase):
+    pass
+
+class TrackerPublic(TrackerBase):
+    id: int
 
 class StrengthBase(SQLModel):
     workout: str # push one,pull
@@ -77,3 +77,10 @@ class Flexibility(SQLModel, table=True):
     style: str
     length: str # wants to be time
     date: str = Field(default=date.today())
+
+class GoalCycles(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    macro_id: int
+    meso_id: int
+    micro_id: int
+    goal_name: str

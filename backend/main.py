@@ -19,7 +19,22 @@ app = FastAPI()
 def on_startup():
     create_db_and_tables()
 
-@app.post("/exercises/strength/", response_model=StrengthPublic)
+@app.post("/trackers/", response_model=TrackerPublic)
+def create_tracker(tracker: TrackerCreate):
+    with Session(engine) as session:
+        db_tracker = Tracker.model_validate(tracker)
+        session.add(db_tracker)
+        session.commit()
+        session.refresh(db_tracker)
+        return db_tracker
+
+@app.get("/trackers/", response_model=list[TrackerPublic])
+def read_tracker():
+    with Session(engine) as session:
+        tracker = session.exec(select(Tracker)).all()
+        return tracker
+
+@app.post(f"/exercises/strength/", response_model=StrengthPublic)
 def create_exercise(exercise: StrengthCreate):
     with Session(engine) as session:
         db_exercise = Strength.model_validate(exercise)
