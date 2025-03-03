@@ -12,6 +12,6 @@
 # echo ""
 # sqlite3 -cmd '.headers on' -cmd '.mode markdown' database.db 'select * from tracker'
 
-sqlite3 -cmd '.headers on' -cmd '.mode markdown' database.db 'select * from exercise'
+sqlite3 -cmd '.headers on' -cmd '.mode markdown' database.db 'select * from strength'
 
 echo "You should add this to bash source so you can type it anywhere in the env"
