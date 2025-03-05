@@ -1,5 +1,6 @@
-from fastapi import FastAPI
-from sqlmodel import Field, Session, SQLModel, create_engine, select
+from enum import Enum
+from fastapi import FastAPI, HTTPException
+from sqlmodel import Field, Session, SQLModel, create_engine, select, col
 from datetime import date
 from models import *
 
@@ -34,7 +35,19 @@ def read_tracker():
         tracker = session.exec(select(Tracker)).all()
         return tracker
 
-@app.post(f"/exercises/strength/", response_model=StrengthPublic)
+# Hey its me, turns out that session.get() only works with ID's
+@app.get("/trackers/{tracker_name}")
+def get_tracker_by_name(tracker_name: str):
+    with Session(engine) as session:
+        statement = select(Tracker).where(Tracker.name == tracker_name)
+        results = session.exec(statement).all()
+
+        if not results:
+            raise HTTPException(status_code=404, detail="tracker not found")
+
+        return results
+
+@app.post(f"/strength/", response_model=StrengthPublic)
 def create_exercise(exercise: StrengthCreate):
     with Session(engine) as session:
         db_exercise = Strength.model_validate(exercise)
@@ -43,7 +56,7 @@ def create_exercise(exercise: StrengthCreate):
         session.refresh(db_exercise)
         return db_exercise
 
-@app.get("/exercises/strength/", response_model=list[StrengthPublic])
+@app.get("/strength/", response_model=list[StrengthPublic])
 def read_exercises():
     with Session(engine) as session:
         exercise = session.exec(select(Strength)).all()

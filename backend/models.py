@@ -4,7 +4,7 @@ from typing import Optional, List
 
 class TrackerBase(SQLModel):
     pillar: str
-    metric: str
+    name: str = Field(index=True)
     complexity: str
     source: str
     storage: str
@@ -17,8 +17,15 @@ class Tracker(TrackerBase, table=True):
 class TrackerCreate(TrackerBase):
     pass
 
-class TrackerPublic(TrackerBase):
-    id: int
+class TrackerUpdate(TrackerBase):
+    pillar: str | None = None
+    name: str | None = None
+    complexity: str | None = None
+    source: str | None = None
+    storage: str | None = None
+    entry_method: str | None = None
+    description: str | None = Field(default=str("No Description set"))
+
 
 class StrengthBase(SQLModel):
     workout: str # push one,pull
