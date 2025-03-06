@@ -17,6 +17,9 @@ class Tracker(TrackerBase, table=True):
 class TrackerCreate(TrackerBase):
     pass
 
+class TrackerPublic(TrackerBase):
+    pass
+
 class TrackerUpdate(TrackerBase):
     pillar: str | None = None
     name: str | None = None

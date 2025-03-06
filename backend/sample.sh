@@ -10,7 +10,7 @@
 # echo ""
 # echo "---"
 # echo ""
-# sqlite3 -cmd '.headers on' -cmd '.mode markdown' database.db 'select * from tracker'
+sqlite3 -cmd '.headers on' -cmd '.mode markdown' database.db 'select * from tracker'
 
 sqlite3 -cmd '.headers on' -cmd '.mode markdown' database.db 'select * from strength'
 
