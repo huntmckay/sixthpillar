@@ -1,3 +1,4 @@
+from enum import Enum
 from sqlmodel import SQLModel, Field, Relationship
 from datetime import date
 from typing import Optional, List
@@ -29,64 +30,47 @@ class TrackerUpdate(TrackerBase):
     entry_method: str | None = None
     description: str | None = Field(default=str("No Description set"))
 
+class ExerciseType(str, Enum):
+    strength = "strength"
+    recovery = "recovery"
+    endurance = "endurance"
 
-class StrengthBase(SQLModel):
-    workout: str # push one,pull
-    target: str #chest -> probably becomes actual msucle names
-    name: str
-    sets: int
-    reps: int
-    rpe: int
-    weight: int
-    effort: str # "6,6,6,6"
+class ExerciseBase(SQLModel):
+    #id: int | None = Field(default=None, primary_key=True)
+    name: str = Field(index=True)
+    program: str # push one,pull,yoga, Nerve Glides, mobility, foam rolling,
     date: str = Field(default=date.today())
+    notes: str | None = None
 
-class Strength(StrengthBase, table=True):
+class StrengthBase(ExerciseBase, table=True):
     id: int = Field(default=None, primary_key=True)
-
-class StrengthCreate(StrengthBase):
-    pass
-
-class StrengthPublic(StrengthBase):
-    id: int
-
-class RecoveryBase(SQLModel):
-    workout: str # yoga, Nerve Glides, mobility, foam rolling,
     target: str #chest -> probably becomes actual msucle names
-    name: str
     sets: int
     reps: int
     rpe: int
     weight: int
     effort: str # "6,6,6,6"
-    date: str = Field(default=date.today())
 
-class Recovery(SQLModel, table=True):
-    id: int = Field(default=None, primary_key=True) # this needs to be hidden in the post API
-
-class RecoveryCreate(RecoveryBase):
+class StrengthExercise(StrengthBase):
     pass
 
-class RecoveryPublic(RecoveryBase):
-    id: int
+class RecoveryBase(ExerciseBase, table=True):
+    id: int = Field(default=None, primary_key=True)
+    target: str
+    sets: int
+    reps: int
 
-class Endurance(SQLModel, table=True):
-    id: int = Field(default=None, primary_key=True) # this needs to be hidden in the post API
-    workout: str
+class RecoveryExercise(RecoveryBase):
+    pass
+
+class EnduranceBase(ExerciseBase, table=True):
+    id: int = Field(default=None, primary_key=True)
     length: str
     distance: str
-    effort: int
-    date: str = Field(default=date.today())
+    effort: int # 1-10
 
-
-class Flexibility(SQLModel, table=True):
-    id: int = Field(default=None, primary_key=True) # this needs to be hidden in the post API
-    workout: str # yoga, Nerve Glides, mobility, foam rolling,
-    target: str #chest -> probably becomes actual msucle names
-    name: str
-    style: str
-    length: str # wants to be time
-    date: str = Field(default=date.today())
+class EnduranceExercise(EnduranceBase):
+    pass
 
 class GoalCycles(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
